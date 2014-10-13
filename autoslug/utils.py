@@ -65,7 +65,7 @@ def generate_unique_slug(field, instance, slug, manager):
     while True:
         # find instances with same slug
         lookups = dict(default_lookups, **{field.name: slug})
-        rivals = manager.filter(**lookups).exclude(pk=instance.pk)
+        rivals = manager.select_for_update().filter(**lookups).exclude(pk=instance.pk)
 
         if not rivals:
             # the slug is unique, no model uses it
