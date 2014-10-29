@@ -10,7 +10,9 @@
 #
 
 # django
-from django.core.exceptions import ImproperlyConfigured
+import random
+import string
+
 from django.db.models.fields import FieldDoesNotExist, DateField
 from django.template.defaultfilters import slugify as django_slugify
 
@@ -55,8 +57,6 @@ def generate_unique_slug(field, instance, slug, manager):
 
     default_lookups = tuple(get_uniqueness_lookups(field, instance, field.unique_with))
 
-    index = 1
-
     if not manager:
         manager = field.model._default_manager
 
@@ -65,14 +65,14 @@ def generate_unique_slug(field, instance, slug, manager):
     while True:
         # find instances with same slug
         lookups = dict(default_lookups, **{field.name: slug})
-        rivals = manager.select_for_update().filter(**lookups).exclude(pk=instance.pk)
+        rivals = manager.filter(**lookups).exclude(pk=instance.pk)
 
         if not rivals:
             # the slug is unique, no model uses it
             return slug
 
         # the slug is not unique; change once more
-        index += 1
+        index = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
 
         # ensure the resulting string is not too long
         tail_length = len(field.index_sep) + len(str(index))
