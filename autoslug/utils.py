@@ -82,7 +82,7 @@ def generate_unique_slug(field, instance, slug, manager):
 
         # re-generate the slug
         data = dict(slug=original_slug, sep=field.index_sep, index=index)
-        slug = '%(slug)s%(sep)s%(index)d' % data
+        slug = '%(slug)s%(sep)s%(index)s' % data
 
         # ...next iteration...
 
