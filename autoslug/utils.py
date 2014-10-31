@@ -72,7 +72,7 @@ def generate_unique_slug(field, instance, slug, manager):
             return slug
 
         # the slug is not unique; change once more
-        index = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+        index = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
 
         # ensure the resulting string is not too long
         tail_length = len(field.index_sep) + len(str(index))
