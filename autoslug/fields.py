@@ -227,7 +227,9 @@ class AutoSlugField(SlugField):
                 slug = ''
 
         if not self.blank:
-            slug = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
+            if not slug:
+                # Slug is blank, randomize
+                slug = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
 
         if slug:
             slug = utils.crop_slug(self, slug)
