@@ -9,6 +9,10 @@
 #  Software Foundation. See the file README for copying conditions.
 #
 
+# builtin
+import random
+import string
+
 # django
 from django.db.models.fields import SlugField
 
@@ -223,7 +227,7 @@ class AutoSlugField(SlugField):
                 slug = ''
 
         if not self.blank:
-            assert slug, 'slug is defined before trying to ensure uniqueness'
+            slug = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
 
         if slug:
             slug = utils.crop_slug(self, slug)
