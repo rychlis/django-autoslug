@@ -222,7 +222,11 @@ class AutoSlugField(SlugField):
             slug = None
 
             if not self.blank:
-                slug = instance._meta.module_name
+                try:
+                    slug = instance._meta.model_name
+                except AttributeError:
+                    # Django < 1.8
+                    slug = instance._meta.module_name
             elif not self.null:
                 slug = ''
 
